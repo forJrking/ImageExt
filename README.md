@@ -1,8 +1,6 @@
 # ImageExt
 
-### Glide封装实现, 主要为ImageView添加扩展函数来简化常见图片加载api
-
-
+### Glide封装实现, 主要为ImageView添加扩展函数来简化常见图片加载api [![](https://jitpack.io/v/forJrking/ImageExt.svg)](https://jitpack.io/#forJrking/ImageExt)
 
 ## 使用方法
 
@@ -17,7 +15,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation ''
+    implementation 'com.github.forJrking:ImageExt:0.0.1'
 }
 ```
 ```kotlin
