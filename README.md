@@ -7,18 +7,18 @@
 ## 使用方法
 
 ```groovy
-	allprojects {
-		repositories {
-			...
-			maven { url 'https://www.jitpack.io' }
-		}
+allprojects {
+	repositories {
+		...
+		maven { url 'https://www.jitpack.io' }
 	}
+}
 ```
 
 ```groovy
-	dependencies {
-	        implementation ''
-	}
+dependencies {
+    implementation ''
+}
 ```
 ```kotlin
 iv_2.loadImage(url, placeHolder = R.color.blue)
@@ -60,7 +60,13 @@ iv_9.loadImage(load = R.drawable.test, with = MainActivity@ this,
 ```kotlin
 ImageView.loadImage(...)
 ImageView.loadProgressImage(...)
-
+ImageView.loadResizeImage(...)
+ImageView.loadGrayImage(...)
+ImageView.loadBlurImage(...)
+ImageView.loadBlurImage(...)
+ImageView.loadRoundCornerImage(...)
+ImageView.loadCircleImage(...)
+ImageView.loadBorderImage(...)
 
 //终极扩展函数
 @JvmOverloads
