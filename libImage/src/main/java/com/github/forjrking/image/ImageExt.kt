@@ -11,7 +11,6 @@ import com.github.forjrking.image.core.ImageOptions
 import com.github.forjrking.image.core.OnImageListener
 import com.github.forjrking.image.glide.GlideImageLoader
 import com.github.forjrking.image.glide.progress.OnProgressListener
-import com.github.forjrking.image.glide.transformation.GrayscaleTransformation
 
 /**
  * @description: ImageView扩展实现
@@ -78,36 +77,36 @@ fun ImageView.loadBorderImage(url: String?, borderWidth: Int = 0, @ColorInt bord
 
 @JvmOverloads
 fun ImageView.loadImage(load: Any?, with: Any? = this,
-                        //占位图 错误图
+        //占位图 错误图
                         @DrawableRes placeHolderResId: Int = placeHolderImageView, placeHolderDrawable: Drawable? = null,
                         @DrawableRes errorResId: Int = placeHolderImageView, errorDrawable: Drawable? = null,
                         @DrawableRes fallbackResId: Int = placeHolderImageView, fallbackDrawable: Drawable? = null,
-                        //缓存策略等
+        //缓存策略等
                         skipMemoryCache: Boolean = false,
                         diskCacheStrategy: ImageOptions.DiskCache = ImageOptions.DiskCache.AUTOMATIC,
-                        //优先级
+        //优先级
                         priority: ImageOptions.LoadPriority = ImageOptions.LoadPriority.NORMAL,
-                        //缩略图
+        //缩略图
                         thumbnail: Float = 0f, thumbnailUrl: Any? = null,
                         size: ImageOptions.OverrideSize? = null,
-                        //gif或者动画
+        //gif或者动画
                         isAnim: Boolean = true,
                         isCrossFade: Boolean = false,
                         isCircle: Boolean = false,
                         isGray: Boolean = false,
                         isFitCenter: Boolean = false,
                         centerCrop: Boolean = false,
-                        //输出图像像素格式
+        //输出图像像素格式
                         format: Bitmap.Config? = null,
-                        //边框 一组一起
+        //边框 一组一起
                         borderWidth: Int = 0, borderColor: Int = 0,
-                        //模糊处理 一组一起使用
+        //模糊处理 一组一起使用
                         isBlur: Boolean = false, blurRadius: Int = 25, blurSampling: Int = 4,
-                        //圆角 一组一起使用
+        //圆角 一组一起使用
                         isRoundedCorners: Boolean = false, roundRadius: Int = 0, cornerType: ImageOptions.CornerType = ImageOptions.CornerType.ALL,
-                        //自定义转换器
+        //自定义转换器
                         vararg transformation: Transformation<Bitmap>,
-                        //进度监听,请求回调监听
+        //进度监听,请求回调监听
                         onProgressListener: OnProgressListener? = null, requestListener: OnImageListener? = null) {
     GlideImageLoader.loadImage(ImageOptions().also {
         it.res = load
