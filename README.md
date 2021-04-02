@@ -2,6 +2,8 @@
 
 ### Glide封装实现, 主要为ImageView添加扩展函数来简化常见图片加载api [![](https://jitpack.io/v/forJrking/ImageExt.svg)](https://jitpack.io/#forJrking/ImageExt)
 
+![img](/Users/forjrking/Downloads/img.gif)
+
 ## 使用方法
 
 ```groovy

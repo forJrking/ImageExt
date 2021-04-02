@@ -30,9 +30,8 @@ import pub.devrel.easypermissions.EasyPermissions
  * @date : 2020/5/9 3:13 PM
  */
 class MainActivity : AppCompatActivity() {
-    var url1 = "https://t7.baidu.com/it/u=2621658848,3952322712&fm=193&f=GIF"
-    var url2 = "https://t7.baidu.com/it/u=3713375227,571533122&fm=193&f=GIF"
-    var url3 = "http://img.mp.itc.cn/upload/20170311/48180d37e4474628900d058f3cc5ee7d_th.gif"
+    var url1 = "https://t7.baidu.com/it/u=3713375227,571533122&fm=193&f=GIF"
+    var url3 = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fhbimg.huabanimg.com%2F3fee54d0b2e0b7a132319a8e104f5fdc2edd3d35d03ee-93Jmdq_fw658&refer=http%3A%2F%2Fhbimg.huabanimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619934437&t=2c758765592bf56ec7eb4ad1912a2830"
     var url4 = "http://img.mp.itc.cn/upload/20170311/33f2b7f7ffb04ecb81e42405e20b3fdc_th.gif"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         circleProgressView.visibility = View.VISIBLE
         iv_0.postDelayed(
                 {
-                    iv_0.loadProgressImage(url1, placeHolder = R.color.gray, progressListener = object : OnProgressListener {
+                    iv_0.loadProgressImage(url3, placeHolder = R.color.gray, progressListener = object : OnProgressListener {
                         override fun onProgress(isComplete: Boolean, percentage: Int, bytesRead: Long, totalBytes: Long) {
                             // 跟踪进度
                             Log.d("TAG", "onProgress: $percentage")
@@ -66,7 +65,7 @@ class MainActivity : AppCompatActivity() {
 
         iv_1.setOnClickListener { downloadImage() }
         iv_8.setOnClickListener { }
-        iv_1.loadImage(url3, placeHolder = R.color.blue)
+        iv_1.loadImage(url1, placeHolder = R.color.blue)
 //
         iv_2.loadImage(url4, loadListener = object : OnImageListener {
             override fun onSuccess(drawable: Drawable?) {
@@ -79,28 +78,28 @@ class MainActivity : AppCompatActivity() {
 
         })
 //
-        iv_3.loadBlurImage(url4)
         iv_4.loadCircleImage(url1)
         iv_5.loadBorderImage(url1, borderWidth = 10, borderColor = Color.RED)
         iv_6.loadGrayImage(url1)
-        iv_7.loadRoundCornerImage(url1, radius = 10, type = ImageOptions.CornerType.ALL)
-        iv_8.loadResizeImage(url2, width = 400, height = 800)
-
-        iv_9.loadImage(load = R.drawable.test, with = MainActivity@ this, placeHolderResId = R.color.black,
-                requestListener = object : OnImageListener {
-                    override fun onSuccess(drawable: Drawable?) {
-                    }
-
-                    override fun onFail(msg: String?) {
-                    }
-
-                },
-                onProgressListener = object : OnProgressListener {
-                    override fun onProgress(isComplete: Boolean, percentage: Int, bytesRead: Long, totalBytes: Long) {
-                    }
-
-                }, transformation = *arrayOf(GrayscaleTransformation(), CircleWithBorderTransformation(borderWidth = 0, borderColor = 0)))
-        iv_10.loadImage("", placeHolder = R.color.green)
+        iv_7.loadRoundCornerImage(url1, radius = 40, type = ImageOptions.CornerType.ALL)
+        iv_8.loadBlurImage(url4)
+//        iv_8.loadResizeImage(url2, width = 400, height = 800)
+//
+//        iv_9.loadImage(load = R.drawable.test, with = MainActivity@ this, placeHolderResId = R.color.black,
+//                requestListener = object : OnImageListener {
+//                    override fun onSuccess(drawable: Drawable?) {
+//                    }
+//
+//                    override fun onFail(msg: String?) {
+//                    }
+//
+//                },
+//                onProgressListener = object : OnProgressListener {
+//                    override fun onProgress(isComplete: Boolean, percentage: Int, bytesRead: Long, totalBytes: Long) {
+//                    }
+//
+//                }, transformation = *arrayOf(GrayscaleTransformation(), CircleWithBorderTransformation(borderWidth = 0, borderColor = 0)))
+//        iv_10.loadImage(url2, placeHolder = R.color.green)
     }
 
     private fun hasStoragePermission(): Boolean {
