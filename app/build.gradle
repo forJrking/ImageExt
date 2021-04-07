@@ -29,6 +29,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.github.forJrking:KLuban:1.0.7'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3"
     implementation project(path: ':libImage')

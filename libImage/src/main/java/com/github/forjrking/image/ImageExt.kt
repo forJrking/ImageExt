@@ -29,9 +29,9 @@ fun ImageView.loadImage(@RawRes @DrawableRes drawableId: Int, @RawRes @DrawableR
 }
 
 @JvmOverloads
-fun ImageView.loadImage(url: String?, @RawRes @DrawableRes placeHolder: Int = placeHolderImageView, @RawRes @DrawableRes errorId: Int = placeHolder, loadListener: OnImageListener? = null) {
+fun ImageView.loadImage(url: String?, @RawRes @DrawableRes placeHolder: Int = placeHolderImageView, @RawRes @DrawableRes errorId: Int = placeHolder, requestListener: (OnImageListener.() -> Unit)? = null) {
     this.loadImage(load = url, placeHolderResId = placeHolder, errorResId = errorId,
-            requestListener = loadListener)
+            requestListener = requestListener)
 }
 
 @JvmOverloads
@@ -107,8 +107,8 @@ fun ImageView.loadImage(load: Any?, with: Any? = this,
         //自定义转换器
                         vararg transformation: Transformation<Bitmap>,
         //进度监听,请求回调监听
-                        onProgressListener: OnProgressListener? = null, requestListener: OnImageListener? = null) {
-    GlideImageLoader.loadImage(ImageOptions().also {
+                        onProgressListener: OnProgressListener = null, requestListener: (OnImageListener.() -> Unit)? = null) {
+    val options = ImageOptions().also {
         it.res = load
         it.imageView = this
         it.context = with
@@ -140,7 +140,19 @@ fun ImageView.loadImage(load: Any?, with: Any? = this,
         it.roundRadius = roundRadius
         it.cornerType = cornerType
         it.transformation = transformation
-        it.onProgressListener = onProgressListener
-        it.requestListener = requestListener
-    })
+        it.progressListener(onProgressListener)
+        requestListener?.let { l -> it.requestListener(l) }
+    }
+    GlideImageLoader.loadImage(options)
+}
+
+/**模仿 coil**/
+fun ImageView.load(load: Any?, options: (ImageOptions.() -> Unit)? = null) {
+    val imageOptions = ImageOptions().also {
+        it.res = load
+        it.imageView = this
+    }
+    GlideImageLoader.loadImage(options?.let {
+        imageOptions.also(options)
+    } ?: imageOptions)
 }

@@ -181,12 +181,12 @@ object GlideImageLoader {
             options.requestListener?.let {
                 addListener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                        options.requestListener?.onFail(e.toString())
+                        options.requestListener?.onFailAction?.invoke(e.toString())
                         return false
                     }
 
                     override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        options.requestListener?.onSuccess(resource)
+                        options.requestListener?.onSuccessAction?.invoke(resource)
                         return false
                     }
                 })

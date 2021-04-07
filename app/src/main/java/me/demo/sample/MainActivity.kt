@@ -2,7 +2,6 @@ package me.demo.sample
 
 import android.Manifest
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -10,9 +9,7 @@ import android.view.View
 import android.widget.Toast
 import com.github.forjrking.image.*
 import com.github.forjrking.image.core.ImageOptions
-import com.github.forjrking.image.core.OnImageListener
 import com.github.forjrking.image.glide.GlideImageLoader
-import com.github.forjrking.image.glide.progress.OnProgressListener
 import com.github.forjrking.image.glide.transformation.CircleWithBorderTransformation
 import com.github.forjrking.image.glide.transformation.GrayscaleTransformation
 import kotlinx.android.synthetic.main.activity_main.*
@@ -48,8 +45,9 @@ class MainActivity : AppCompatActivity() {
         circleProgressView.visibility = View.VISIBLE
         iv_0.postDelayed(
                 {
-                    iv_0.loadProgressImage(url3, placeHolder = R.color.gray, progressListener = object : OnProgressListener {
-                        override fun onProgress(isComplete: Boolean, percentage: Int, bytesRead: Long, totalBytes: Long) {
+                    iv_0.load(url3) {
+                        placeHolderResId = R.color.gray
+                        progressListener { isComplete, percentage, bytesRead, totalBytes ->
                             // 跟踪进度
                             Log.d("TAG", "onProgress: $percentage")
                             if (isComplete) {
@@ -58,7 +56,7 @@ class MainActivity : AppCompatActivity() {
                                 circleProgressView.progress = percentage
                             }
                         }
-                    })
+                    }
 
                 }, 500
         )
@@ -67,22 +65,20 @@ class MainActivity : AppCompatActivity() {
         iv_8.setOnClickListener { }
         iv_1.loadImage(url1, placeHolder = R.color.blue)
 //
-        iv_2.loadImage(url4, loadListener = object : OnImageListener {
-            override fun onSuccess(drawable: Drawable?) {
+        iv_2.loadImage(url4, requestListener = {
+            onSuccess {
                 Toast.makeText(application, R.string.load_success, Toast.LENGTH_LONG).show()
             }
-
-            override fun onFail(msg: String?) {
-                Toast.makeText(application, R.string.load_failed, Toast.LENGTH_LONG).show()
+            onFail {
+                Toast.makeText(application, R.string.load_failed, Toast.LENGTH_SHORT).show()
             }
-
         })
 //
         iv_4.loadCircleImage(url1)
         iv_5.loadBorderImage(url1, borderWidth = 10, borderColor = Color.RED)
         iv_6.loadGrayImage(url1)
         iv_7.loadRoundCornerImage(url1, radius = 40, type = ImageOptions.CornerType.ALL)
-        iv_8.loadBlurImage(url4)
+//        iv_8.loadBlurImage(url4)
 //        iv_8.loadResizeImage(url2, width = 400, height = 800)
 //
 //        iv_9.loadImage(load = R.drawable.test, with = MainActivity@ this, placeHolderResId = R.color.black,
@@ -100,6 +96,21 @@ class MainActivity : AppCompatActivity() {
 //
 //                }, transformation = *arrayOf(GrayscaleTransformation(), CircleWithBorderTransformation(borderWidth = 0, borderColor = 0)))
 //        iv_10.loadImage(url2, placeHolder = R.color.green)
+        iv_8.load(url1) {
+            placeHolderResId = R.color.black
+            transformation = arrayOf(GrayscaleTransformation(), CircleWithBorderTransformation(borderWidth = 0, borderColor = 0))
+            progressListener { isComplete, percentage, bytesRead, totalBytes ->
+                //加载进度
+            }
+            requestListener {
+                onSuccess {
+
+                }
+                onFail {
+
+                }
+            }
+        }
     }
 
     private fun hasStoragePermission(): Boolean {
@@ -129,4 +140,5 @@ class MainActivity : AppCompatActivity() {
     companion object {
         private const val WRITE_EXTERNAL_PERM = 123
     }
+
 }

@@ -5,7 +5,6 @@ import com.github.forjrking.image.glide.progress.ProgressResponseBody.InternalPr
 import okhttp3.Call
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import java.lang.ref.WeakReference
 import java.util.concurrent.ConcurrentHashMap
 
 /**
@@ -33,11 +32,10 @@ object ProgressManager {
 
     private val LISTENER = object : InternalProgressListener {
         override fun onProgress(url: String, bytesRead: Long, totalBytes: Long) {
-            val onProgressListener = getProgressListener(url)
-            if (onProgressListener != null) {
+            getProgressListener(url)?.let {
                 val percentage = (bytesRead * 1f / totalBytes * 100f).toInt()
                 val isComplete = percentage >= 100
-                onProgressListener.onProgress(isComplete, percentage, bytesRead, totalBytes)
+                it.invoke(isComplete, percentage, bytesRead, totalBytes)
                 if (isComplete) {
                     removeListener(url)
                 }
@@ -45,10 +43,10 @@ object ProgressManager {
         }
     }
 
-    fun addListener(url: String, listener: OnProgressListener?) {
+    fun addListener(url: String, listener: OnProgressListener) {
         if (!TextUtils.isEmpty(url) && listener != null) {
             listenersMap[url] = listener
-            listener.onProgress(false, 1, 0, 0)
+            listener.invoke(false, 1, 0, 0)
         }
     }
 
@@ -58,7 +56,7 @@ object ProgressManager {
         }
     }
 
-    fun getProgressListener(url: String?): OnProgressListener? {
+    fun getProgressListener(url: String?): OnProgressListener {
         return if (TextUtils.isEmpty(url) || listenersMap.size == 0) {
             null
         } else listenersMap[url]

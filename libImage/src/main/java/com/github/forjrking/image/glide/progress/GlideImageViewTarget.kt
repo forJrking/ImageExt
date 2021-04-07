@@ -9,9 +9,8 @@ class GlideImageViewTarget(view: ImageView?, var url: Any?) : DrawableImageViewT
 
     override fun onLoadFailed(errorDrawable: Drawable?) {
         url?.apply {
-            val onProgressListener = ProgressManager.getProgressListener(this.toString())
-            if (onProgressListener != null) {
-                onProgressListener.onProgress(false, 100, 0, 0)
+            ProgressManager.getProgressListener(this.toString())?.let {
+                it.invoke(false, 100, 0, 0)
                 ProgressManager.removeListener(this.toString())
             }
         }
@@ -20,9 +19,8 @@ class GlideImageViewTarget(view: ImageView?, var url: Any?) : DrawableImageViewT
 
     override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
         url?.apply {
-            val onProgressListener = ProgressManager.getProgressListener(this.toString())
-            if (onProgressListener != null) {
-                onProgressListener.onProgress(true, 100, 0, 0)
+            ProgressManager.getProgressListener(this.toString())?.let {
+                it.invoke(true, 100, 0, 0)
                 ProgressManager.removeListener(this.toString())
             }
         }

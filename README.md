@@ -1,6 +1,6 @@
-# ImageExt
+# ImageExt 参考Coil对Glide封装实现
 
-### Glide封装实现, 主要为ImageView添加扩展函数来简化常见图片加载api [![](https://jitpack.io/v/forJrking/ImageExt.svg)](https://jitpack.io/#forJrking/ImageExt)
+### 主要为ImageView添加扩展函数来简化常见图片加载api [![](https://jitpack.io/v/forJrking/ImageExt.svg)](https://jitpack.io/#forJrking/ImageExt)
 
 ![img](img/img.gif)
 
@@ -35,15 +35,29 @@ iv_7.loadRoundCornerImage(url, radius = 10, type = ImageOptions.CornerType.ALL)
 //resize
 iv_8.loadResizeImage(url, width = 400, height = 800)
 //监听回调结果
-iv.loadImage(url4, loadListener = object : OnImageListener {
-    override fun onSuccess(drawable: Drawable?) {
+iv_9.loadImage(url4, requestListener = {
+    onSuccess {
         Toast.makeText(application, R.string.load_success, Toast.LENGTH_LONG).show()
     }
-    override fun onFail(msg: String?) {
-        Toast.makeText(application, R.string.load_failed, Toast.LENGTH_LONG).show()
+    onFail {
+        Toast.makeText(application, R.string.load_failed, Toast.LENGTH_SHORT).show()
     }
 })
 //终极扩展 参数非常多必须使用可选参数方式调用
+iv_8.load(url1) {
+    placeHolderResId = R.color.black
+    transformation = arrayOf(GrayscaleTransformation())
+    progressListener { isComplete, percentage, bytesRead, totalBytes ->
+        //加载进度
+    }
+    requestListener {
+        onSuccess {
+        }
+        onFail {
+        }
+    }
+}
+//超长扩展函数 选用建议用上面DSL方式
 iv_9.loadImage(load = R.drawable.test, with = MainActivity@ this, 
                placeHolderResId = R.color.black,errorResId = R.color.blue,isAnim = false,
         requestListener = object : OnImageListener {
@@ -67,8 +81,9 @@ ImageView.loadBlurImage(...)
 ImageView.loadRoundCornerImage(...)
 ImageView.loadCircleImage(...)
 ImageView.loadBorderImage(...)
+ImageView.load(load: Any?, options: ImageOptions.() -> Unit)//DSL
 
-//终极扩展函数
+//终极扩展函数  选用dsl方式
 @JvmOverloads
 fun ImageView.loadImage(load: Any?, with: Any? = this,
 //占位图 错误图
@@ -123,5 +138,10 @@ onProgressListener: OnProgressListener? = null, requestListener: OnImageListener
  	app:cpv_progressTextVisible="false" />
 ```
 ## SelectImageView 仿微信图片点击响应
-一个点击可以变为半透明的View，算是一个Bonus，所以放在了Sample里。逻辑十分简单，看代码即可。
+一个点击可以变为半透明
+
+## CircleImageView 圆形头像
+
+一个圆形图片展示控件
+
 

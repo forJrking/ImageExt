@@ -52,12 +52,12 @@
             android:layout_marginBottom="15dp"
             android:scaleType="centerCrop" />
 
-<!--        <ImageView-->
-<!--            android:id="@+id/iv_3"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="200dp"-->
-<!--            android:layout_marginBottom="15dp"-->
-<!--            android:scaleType="centerCrop" />-->
+        <!--        <ImageView-->
+        <!--            android:id="@+id/iv_3"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="200dp"-->
+        <!--            android:layout_marginBottom="15dp"-->
+        <!--            android:scaleType="centerCrop" />-->
 
 
         <ImageView
@@ -83,27 +83,26 @@
             android:id="@+id/iv_7"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:padding="15dp"
-            android:layout_marginBottom="15dp" />
+            android:layout_marginBottom="15dp"
+            android:padding="15dp" />
 
         <me.demo.sample.SelectImageView
             android:id="@+id/iv_8"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"
             android:layout_marginBottom="15dp" />
 
-<!--        <me.demo.sample.SelectImageView-->
-<!--            android:id="@+id/iv_9"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="200dp"-->
-<!--            android:layout_marginBottom="15dp" />-->
+        <!--        <me.demo.sample.SelectImageView-->
+        <!--            android:id="@+id/iv_9"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="200dp"-->
+        <!--            android:layout_marginBottom="15dp" />-->
 
-<!--        <ImageView-->
-<!--            android:id="@+id/iv_10"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="200dp"-->
-<!--            android:layout_marginBottom="15dp" />-->
+        <!--        <ImageView-->
+        <!--            android:id="@+id/iv_10"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="200dp"-->
+        <!--            android:layout_marginBottom="15dp" />-->
 
     </LinearLayout>
 

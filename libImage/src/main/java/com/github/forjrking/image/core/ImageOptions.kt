@@ -7,7 +7,6 @@ import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.load.Transformation
-import com.bumptech.glide.load.engine.cache.DiskCache
 import com.github.forjrking.image.glide.progress.OnProgressListener
 
 /**
@@ -134,10 +133,20 @@ class ImageOptions {
     var transformation: Array<out Transformation<Bitmap>>? = null
 
     /*** 网络进度监听器*/
-    var onProgressListener: OnProgressListener? = null
+    var onProgressListener: OnProgressListener = null
+        private set
+
+    fun progressListener(listener: OnProgressListener) {
+        this.onProgressListener = listener
+    }
 
     /*** 加载监听*/
     var requestListener: OnImageListener? = null
+        private set
+
+    fun requestListener(listener: OnImageListener.() -> Unit) {
+        requestListener = OnImageListener().also(listener)
+    }
 
     /**
      * 指定加载图片的大小

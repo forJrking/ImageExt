@@ -2,9 +2,15 @@ package com.github.forjrking.image.core
 
 import android.graphics.drawable.Drawable
 
-interface OnImageListener {
+class OnImageListener {
+    internal var onFailAction: ((String?) -> Unit)? = null
+    internal var onSuccessAction: ((Drawable?) -> Unit)? = null
 
-    fun onSuccess(drawable: Drawable?)
+    fun onFail(action: (String?) -> Unit) {
+        onFailAction = action
+    }
 
-    fun onFail(msg: String?)
+    fun onSuccess(action: (Drawable?) -> Unit) {
+        onSuccessAction = action
+    }
 }
