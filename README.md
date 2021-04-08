@@ -60,10 +60,10 @@ iv_8.load(url1) {
 //超长扩展函数 选用建议用上面DSL方式
 iv_9.loadImage(load = R.drawable.test, with = MainActivity@ this, 
                placeHolderResId = R.color.black,errorResId = R.color.blue,isAnim = false,
-        requestListener = object : OnImageListener {
+        requestListener = {
            ...
         },
-        onProgressListener = object : OnProgressListener {
+        onProgressListener = {
          ...
         }, transformation = *arrayOf(GrayscaleTransformation())
 )
