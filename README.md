@@ -123,19 +123,19 @@ onProgressListener: OnProgressListener? = null, requestListener: OnImageListener
 就是原封不动来自[GlideImageView](https://github.com/sunfusheng/GlideImageView) ，在布局中加入即可，有三种样式可供选择。
 ```xml
 <CircleProgressView
- 	android:id="@+id/progressView"
- 	android:layout_width="50dp"
- 	android:layout_height="50dp"
- 	android:layout_centerInParent="true"
- 	android:layout_margin="10dp"
- 	android:progress="0"
- 	android:visibility="gone"
- 	app:cpv_progressNormalColor="@color/transparent10"
- 	app:cpv_progressReachColor="@color/transparent90_white"
- 	app:cpv_progressStyle="FillInnerArc"
- 	app:cpv_progressTextColor="@color/red"
- 	app:cpv_progressTextSize="13sp"
- 	app:cpv_progressTextVisible="false" />
+ android:id="@+id/progressView"
+ android:layout_width="50dp"
+ android:layout_height="50dp"
+ android:layout_centerInParent="true"
+ android:layout_margin="10dp"
+ android:progress="0"
+ android:visibility="gone"
+ app:cpv_progressNormalColor="@color/transparent10"
+ app:cpv_progressReachColor="@color/transparent90_white"
+ app:cpv_progressStyle="FillInnerArc"
+ app:cpv_progressTextColor="@color/red"
+ app:cpv_progressTextSize="13sp"
+ app:cpv_progressTextVisible="false" />
 ```
 ## SelectImageView 仿微信图片点击响应
 一个点击可以变为半透明
