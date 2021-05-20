@@ -86,30 +86,27 @@ object GlideImageLoader {
             priority(priority)
             skipMemoryCache(options.skipMemoryCache)
 
-            if (options.placeHolderDrawable != null) {
-                placeholder(options.placeHolderDrawable)
-            }
+            val drawableOptions = options.drawableOptions
+
             //设置占位符
-            if (options.placeHolderResId != 0) {
-                placeholder(options.placeHolderResId)
-            }
-            if (options.errorDrawable != null) {
-                error(options.errorDrawable)
+            if (drawableOptions.placeHolderDrawable != null) {
+                placeholder(drawableOptions.placeHolderDrawable)
+            } else if (drawableOptions.placeHolderResId != 0) {
+                placeholder(drawableOptions.placeHolderResId)
             }
             //设置错误的图片
-            if (options.errorResId != 0) {
-                error(options.errorResId)
+            if (drawableOptions.errorDrawable != null) {
+                error(drawableOptions.errorDrawable)
+            } else if (drawableOptions.errorResId != 0) {
+                error(drawableOptions.errorResId)
             }
             //设置请求 url 为空图片
-            if (options.errorDrawable != null) {
-                error(options.errorDrawable)
+            if (drawableOptions.fallbackDrawable != null) {
+                fallback(drawableOptions.fallbackDrawable)
+            } else if (drawableOptions.fallbackResId != 0) {
+                fallback(drawableOptions.fallbackResId)
             }
-            if (options.fallbackResId != 0) {
-                fallback(options.fallbackResId)
-            }
-            if (options.fallbackDrawable != null) {
-                fallback(options.fallbackDrawable)
-            }
+
             //目标尺寸
             val size = options.size
             size?.let {
@@ -141,7 +138,8 @@ object GlideImageLoader {
 
             if (options.isCircle || options.borderWidth > 0) {
                 if (options.isCircle) {
-                    transform(CircleWithBorderTransformation(options.borderWidth, options.borderColor))
+                    transform(CircleWithBorderTransformation(options.borderWidth,
+                        options.borderColor))
                 } else {
                     transform(BorderTransformation(options.borderWidth, options.borderColor))
                 }
@@ -153,20 +151,26 @@ object GlideImageLoader {
                 // 圆角特效受到ImageView的scaleType属性影响
                 val scaleType = options.imageView?.scaleType
                 if (scaleType == ImageView.ScaleType.FIT_CENTER ||
-                        scaleType == ImageView.ScaleType.CENTER_INSIDE ||
-                        scaleType == ImageView.ScaleType.CENTER ||
-                        scaleType == ImageView.ScaleType.CENTER_CROP) {
+                    scaleType == ImageView.ScaleType.CENTER_INSIDE ||
+                    scaleType == ImageView.ScaleType.CENTER ||
+                    scaleType == ImageView.ScaleType.CENTER_CROP
+                ) {
                     transformation = CenterCrop()
                 }
                 if (transformation == null) {
-                    transform(RoundedCornersTransformation(options.roundRadius, 0, options.cornerType))
+                    transform(RoundedCornersTransformation(options.roundRadius,
+                        0,
+                        options.cornerType))
                 } else {
-                    transform(transformation, RoundedCornersTransformation(options.roundRadius, 0, options.cornerType))
+                    transform(transformation,
+                        RoundedCornersTransformation(options.roundRadius, 0, options.cornerType))
                 }
             }
 
             if (options.isBlur) {
-                transform(BlurTransformation(options.imageView!!.context, options.blurRadius, options.blurSampling))
+                transform(BlurTransformation(options.imageView!!.context,
+                    options.blurRadius,
+                    options.blurSampling))
             }
 
             if (options.isGray) {
@@ -180,12 +184,23 @@ object GlideImageLoader {
             //endregion
             options.requestListener?.let {
                 addListener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean,
+                    ): Boolean {
                         options.requestListener?.onFailAction?.invoke(e.toString())
                         return false
                     }
 
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean,
+                    ): Boolean {
                         options.requestListener?.onSuccessAction?.invoke(resource)
                         return false
                     }
@@ -249,22 +264,26 @@ object GlideImageLoader {
     }
 
     /**下载*/
-    suspend fun downloadImage(context: Context, imgUrl: String?): File? = withContext(Dispatchers.IO) {
-        var extension = MimeTypeMap.getFileExtensionFromUrl(imgUrl)
-        if (extension.isNullOrEmpty()) extension = "png"
-        val file = Glide.with(context).download(imgUrl).submit().get()
-        val appDir = context.getExternalFilesDir("img")
-        if (!appDir!!.exists()) {
-            appDir.mkdirs()
+    suspend fun downloadImage(context: Context, imgUrl: String?): File? =
+        withContext(Dispatchers.IO) {
+            var extension = MimeTypeMap.getFileExtensionFromUrl(imgUrl)
+            if (extension.isNullOrEmpty()) extension = "png"
+            val file = Glide.with(context).download(imgUrl).submit().get()
+            val appDir = context.getExternalFilesDir("img")
+            if (!appDir!!.exists()) {
+                appDir.mkdirs()
+            }
+            //保存的文件名
+            val fileName = "img_" + System.nanoTime() + "." + extension
+            val targetFile = File(appDir, fileName)
+            file.copyTo(targetFile)
+            //扫描媒体库
+            val mimeTypes = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+            MediaScannerConnection.scanFile(context,
+                arrayOf(targetFile.absolutePath),
+                arrayOf(mimeTypes),
+                null)
+            targetFile
         }
-        //保存的文件名
-        val fileName = "img_" + System.nanoTime() + "." + extension
-        val targetFile = File(appDir, fileName)
-        file.copyTo(targetFile)
-        //扫描媒体库
-        val mimeTypes = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
-        MediaScannerConnection.scanFile(context, arrayOf(targetFile.absolutePath), arrayOf(mimeTypes), null)
-        targetFile
-    }
 
 }

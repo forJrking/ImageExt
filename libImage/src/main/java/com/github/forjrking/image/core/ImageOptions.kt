@@ -20,40 +20,69 @@ class ImageOptions {
     /*** 显示容器*/
     var imageView: ImageView? = null
 
-    /**
-     * imageView存在的上下文或者fragment\activity
-     */
+    /*** imageView存在的上下文或者fragment\activity */
     var context: Any? = null
         get() {
             return field ?: imageView
         }
 
     /**
-     * 加载占位图资源ID，如果placeholder是0表示没有占位图
+     * DES: 默认图等 通过代码分组管理方式
+     * @link DrawableOptions#DEFAULT
      */
+    var drawableOptions: DrawableOptions = DrawableOptions.DEFAULT
+
+    /** DES: 通过显示指定 */
+    inline fun setDrawableOptions(options: DrawableOptions.() -> Unit) {
+        drawableOptions = drawableOptions.copy().also(options)
+    }
+
+    /*** 加载占位图资源ID，如果placeholder是0表示没有占位图*/
     @DrawableRes
-    var placeHolderResId = 0
+    var placeHolderResId: Int = 0
+        get() = TODO()
+        set(value) {
+            setDrawableOptions { placeHolderResId = value }
+            field = value
+        }
 
-    /**
-     * 加载占位图资源Drawable对象
-     */
-    var placeHolderDrawable: Drawable? = null
+    /*** 加载占位图资源Drawable对象*/
+    var placeHolderDrawable: Drawable?
+        get() = TODO()
+        set(value) {
+            setDrawableOptions { placeHolderDrawable = value }
+        }
 
-    /**
-     * 错误占位图的资源ID
-     */
+    /*** 错误占位图的资源ID*/
     @DrawableRes
     var errorResId = 0
+        get() = TODO()
+        set(value) {
+            setDrawableOptions { errorResId = value }
+            field = value
+        }
 
-    /**
-     * 加载失败占位图资源Drawable对象
-     */
-    var errorDrawable: Drawable? = null
+    /*** 加载失败占位图资源Drawable对象*/
+    var errorDrawable: Drawable?
+        get() = TODO()
+        set(value) {
+            setDrawableOptions { placeHolderDrawable = value }
+        }
 
+    /** DES: fallback */
     @DrawableRes
     var fallbackResId = 0
+        get() = TODO()
+        set(value) {
+            setDrawableOptions { fallbackResId = value }
+            field = value
+        }
 
-    var fallbackDrawable: Drawable? = null
+    var fallbackDrawable: Drawable?
+        get() = TODO()
+        set(value) {
+            setDrawableOptions { fallbackDrawable = value }
+        }
 
     /*** 是否渐隐加载*/
     var isCrossFade = true
@@ -107,7 +136,7 @@ class ImageOptions {
      */
     var isBlur: Boolean = false
 
-    /***  高斯模糊半經*/
+    /*** 高斯模糊半經 */
     var blurRadius: Int = 25
 
     /*** 缩放系数 加速模糊速度*/
@@ -146,6 +175,33 @@ class ImageOptions {
 
     fun requestListener(listener: OnImageListener.() -> Unit) {
         requestListener = OnImageListener().also(listener)
+    }
+
+    data class DrawableOptions(
+        /*** 加载占位图资源ID，如果placeholder是0表示没有占位图*/
+        @DrawableRes var placeHolderResId: Int = 0,
+
+        /*** 加载占位图资源Drawable对象*/
+        var placeHolderDrawable: Drawable? = null,
+
+        /*** 错误占位图的资源ID*/
+        @DrawableRes var errorResId: Int = 0,
+
+        /*** 加载失败占位图资源Drawable对象*/
+        var errorDrawable: Drawable? = null,
+
+        /** DES: fallback */
+        @DrawableRes
+        var fallbackResId: Int = 0,
+        var fallbackDrawable: Drawable? = null,
+    ) {
+        companion object {
+            var DEFAULT = DrawableOptions()
+
+            inline fun setDefault(options: DrawableOptions.() -> Unit) {
+                DEFAULT = DEFAULT.also(options)
+            }
+        }
     }
 
     /**

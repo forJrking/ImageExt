@@ -1,5 +1,6 @@
 package com.github.forjrking.image
 
+import com.github.forjrking.image.core.ImageOptions
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -13,5 +14,18 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
+
+        ImageOptions.DrawableOptions.setDefault {
+            errorResId = 2
+            placeHolderResId = 1
+        }
+
+        val imageOptions = ImageOptions()
+        imageOptions.setDrawableOptions {
+            errorResId =3
+        }
+
+        println(ImageOptions.DrawableOptions.DEFAULT)
+        println(imageOptions.drawableOptions)
     }
 }
