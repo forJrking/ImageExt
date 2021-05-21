@@ -4,7 +4,7 @@
 
 `glide` 是 `Google 官方`推荐的一款图片加载库，Coil是号称[Kotlin-first的Android图片加载库](https://juejin.cn/post/6844903913007611917) ，融合了kotlin特性、android最主流的技术和趋势，本篇我们主要分享如何用`kotlin`把`glide`封装的使用起来像`coil`一样。
 
-## 集成和API预览
+## 集成和API预览 [![](https://jitpack.io/v/forJrking/ImageExt.svg)](https://jitpack.io/#forJrking/ImageExt)
 
 1. ```groovy
    allprojects {
