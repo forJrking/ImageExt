@@ -38,6 +38,11 @@ class MainActivity : AppCompatActivity() {
         }
         GlideImageLoader.clearMemory(applicationContext)
 
+        ImageOptions.DrawableOptions.setDefault {
+            placeHolderResId =  R.drawable.ic_launcher_background
+            errorResId = R.color.gray
+        }
+
         initView()
     }
 
@@ -46,7 +51,6 @@ class MainActivity : AppCompatActivity() {
         iv_0.postDelayed(
                 {
                     iv_0.load(url3) {
-                        placeHolderResId = R.color.gray
                         progressListener { isComplete, percentage, bytesRead, totalBytes ->
                             // 跟踪进度
                             Log.d("TAG", "onProgress: $percentage")
@@ -102,6 +106,7 @@ class MainActivity : AppCompatActivity() {
             progressListener { isComplete, percentage, bytesRead, totalBytes ->
                 //加载进度
             }
+            drawableOptions = ImageOptions.DrawableOptions.DEFAULT
             requestListener {
                 onSuccess {
 

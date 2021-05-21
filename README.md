@@ -1,6 +1,6 @@
 # ImageExt 参考Coil对Glide封装实现
 
-### 主要为ImageView添加扩展函数来简化常见图片加载api [![](https://jitpack.io/v/forJrking/ImageExt.svg)](https://jitpack.io/#forJrking/ImageExt)
+> 主要为ImageView添加扩展函数来简化常见图片加载api [![](https://jitpack.io/v/forJrking/ImageExt.svg)](https://jitpack.io/#forJrking/ImageExt)
 
 ![img](img/img.gif)
 
@@ -17,10 +17,16 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.github.forJrking:ImageExt:0.0.1'
+    implementation 'com.github.forJrking:ImageExt:0.0.3'
 }
 ```
 ```kotlin
+//配置全局占位图 错误图 非必须
+ImageOptions.DrawableOptions.setDefault {
+    placeHolderResId =  R.drawable.ic_launcher_background
+    errorResId = R.color.gray
+}
+//加载url 单独设置占位图
 iv_2.loadImage(url, placeHolder = R.color.blue)
 //模糊
 iv_3.loadBlurImage(url)
@@ -34,6 +40,11 @@ iv_6.loadGrayImage(url)
 iv_7.loadRoundCornerImage(url, radius = 10, type = ImageOptions.CornerType.ALL)
 //resize
 iv_8.loadResizeImage(url, width = 400, height = 800)
+//支持不需要全局占位图 单独分类管理
+val homeOptions = ImageOptions.DrawableOptions(placeHolderResId = R.drawable.home_holder,errorResId = R.drawable.error_holder)
+iv_8.load(url){
+    drawableOptions = homeOptions
+}
 //监听回调结果
 iv_9.loadImage(url4, requestListener = {
     onSuccess {
@@ -69,7 +80,7 @@ iv_9.loadImage(load = R.drawable.test, with = MainActivity@ this,
 )
 ```
 
-## 可选扩展函数Api
+## 可选扩展函数和Api介绍
 
 ```kotlin
 ImageView.loadImage(...)
@@ -82,44 +93,39 @@ ImageView.loadRoundCornerImage(...)
 ImageView.loadCircleImage(...)
 ImageView.loadBorderImage(...)
 ImageView.load(load: Any?, options: ImageOptions.() -> Unit)//DSL
-
-//终极扩展函数  选用dsl方式
-@JvmOverloads
-fun ImageView.loadImage(load: Any?, with: Any? = this,
-//占位图 错误图
-@DrawableRes placeHolderResId: Int = placeHolderImageView, placeHolderDrawable: Drawable? = null,
-@DrawableRes errorResId: Int = placeHolderImageView, errorDrawable: Drawable? = null,
-@DrawableRes fallbackResId: Int = placeHolderImageView, fallbackDrawable: Drawable? = null,
-//缓存策略等
-skipMemoryCache: Boolean = false,
-diskCacheStrategy: ImageOptions.DiskCache = ImageOptions.DiskCache.AUTOMATIC,
-//优先级
-priority: ImageOptions.LoadPriority = ImageOptions.LoadPriority.NORMAL,
-//缩略图
-thumbnail: Float = 0f, thumbnailUrl: Any? = null,
-size: ImageOptions.OverrideSize? = null,
-//gif或者动画
-isAnim: Boolean = true,
-isCrossFade: Boolean = false,
-isCircle: Boolean = false,
-isGray: Boolean = false,
-isFitCenter: Boolean = false,
-centerCrop: Boolean = false,
-//输出图像像素格式
-format: Bitmap.Config? = null,
-//边框 一组一起
-borderWidth: Int = 0, borderColor: Int = 0,
-//模糊处理 一组一起使用
-isBlur: Boolean = false, blurRadius: Int = 25, blurSampling: Int = 4,
-//圆角 一组一起使用
-isRoundedCorners: Boolean = false, roundRadius: Int = 0, cornerType: ImageOptions.CornerType = ImageOptions.CornerType.ALL,
-//自定义转换器
-vararg transformation: Transformation<Bitmap>,
-//进度监听,请求回调监听
-onProgressListener: OnProgressListener? = null, requestListener: OnImageListener? = null) {...}
 ```
 
+| `load: Any？`                                                | 加载资源                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `with: Any?`                                                 | Glide.with( )参数，默认用ImageView                           |
+| `placeHolderResId: Int`                                      | 占位图 资源id                                                |
+| `placeHolderDrawable: Drawable?`                             | 占位图 drawable                                              |
+| `errorResId: Int`                                            | 错误图 资源id                                                |
+| `errorDrawable: Drawable?`                                   | 错误图 drawable                                              |
+| `skipMemoryCache: Boolean = false`                           | 跳过内存缓存                                                 |
+| `diskCacheStrategy: ImageOptions.DiskCache`                  | 磁盘缓存策略                                                 |
+| `priority: ImageOptions.LoadPriority`                        | 加载优先级                                                   |
+| `thumbnail: Float = 0f`                                      | 缩略图 缩略系数                                              |
+| ` thumbnailUrl: Any? = null`                                 | 缩略图 url、File等                                           |
+| `size: ImageOptions.OverrideSize?`                           | override                                                     |
+| `isAnim: Boolean = true`                                     | 动画 gif动图支持                                             |
+| `isCrossFade: Boolean = false`                               | crossFade                                                    |
+| `isCircle: Boolean = false`                                  | 圆形头像                                                     |
+| `isGray: Boolean = false`                                    | 黑白图像                                                     |
+| `isFitCenter: Boolean = false`                               | FitCenter                                                    |
+| `centerCrop: Boolean = false`                                | centerCrop                                                   |
+| `format: Bitmap.Config? = null`                              | 输出图像模式                                                 |
+| `borderWidth: Int = 0, borderColor: Int = 0`                 | 边框宽度，边框颜色                                           |
+| `isBlur: Boolean = false, blurRadius: Int = 25, blurSampling: Int = 4` | 高斯模糊，模糊半径和图像缩放倍数（倍数越高处理速度越快，图像越不清晰） |
+| `isRoundedCorners: Boolean = false, roundRadius: Int = 0, cornerType: ImageOptions.CornerType` | 圆角，圆角弧度，圆角模式，单角、对角、四角                   |
+| `vararg transformation: Transformation<Bitmap>`              | 转换器，支持圆角、黑白等和其他自定义                         |
+| `onProgressListener: OnProgressListener? = null`             | 网络资源进度监听，仅网络资源有效                             |
+| `requestListener: OnImageListener?`                          | 加载结果监听,成功和失败                                      |
+
+
+
 ## CircleProgressView 仿微博图片加载
+
 就是原封不动来自[GlideImageView](https://github.com/sunfusheng/GlideImageView) ，在布局中加入即可，有三种样式可供选择。
 ```xml
 <CircleProgressView
@@ -143,5 +149,4 @@ onProgressListener: OnProgressListener? = null, requestListener: OnImageListener
 ## CircleImageView 圆形头像
 
 一个圆形图片展示控件
-
 
