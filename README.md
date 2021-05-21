@@ -61,6 +61,35 @@
    ```
 
    ![](https://files.catbox.moe/f27rwx.gif)
+## Api总览
+
+
+| `load: Any？`                                                | 加载资源                                                     |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| `with: Any?`                                                 | Glide.with( )参数，默认用ImageView                           |
+| `placeHolderResId: Int`                                      | 占位图 资源id                                                |
+| `placeHolderDrawable: Drawable?`                             | 占位图 drawable                                              |
+| `errorResId: Int`                                            | 错误图 资源id                                                |
+| `errorDrawable: Drawable?`                                   | 错误图 drawable                                              |
+| `skipMemoryCache: Boolean = false`                           | 跳过内存缓存                                                 |
+| `diskCacheStrategy: ImageOptions.DiskCache`                  | 磁盘缓存策略                                                 |
+| `priority: ImageOptions.LoadPriority`                        | 加载优先级                                                   |
+| `thumbnail: Float = 0f`                                      | 缩略图 缩略系数                                              |
+| ` thumbnailUrl: Any? = null`                                 | 缩略图 url、File等                                           |
+| `size: ImageOptions.OverrideSize?`                           | override                                                     |
+| `isAnim: Boolean = true`                                     | 动画 gif动图支持                                             |
+| `isCrossFade: Boolean = false`                               | crossFade                                                    |
+| `isCircle: Boolean = false`                                  | 圆形头像                                                     |
+| `isGray: Boolean = false`                                    | 黑白图像                                                     |
+| `isFitCenter: Boolean = false`                               | FitCenter                                                    |
+| `centerCrop: Boolean = false`                                | centerCrop                                                   |
+| `format: Bitmap.Config? = null`                              | 输出图像模式                                                 |
+| `borderWidth: Int = 0, borderColor: Int = 0`                 | 边框宽度，边框颜色                                           |
+| `isBlur: Boolean = false, blurRadius: Int = 25, blurSampling: Int = 4` | 高斯模糊，模糊半径和图像缩放倍数（倍数越高处理速度越快，图像越不清晰） |
+| `isRoundedCorners: Boolean = false, roundRadius: Int = 0, cornerType: ImageOptions.CornerType` | 圆角，圆角弧度，圆角模式，单角、对角、四角                   |
+| `vararg transformation: Transformation<Bitmap>`              | 转换器，支持圆角、黑白等和其他自定义                         |
+| `onProgressListener: OnProgressListener? = null`             | 网络资源进度监听，仅网络资源有效                             |
+| `requestListener: OnImageListener?`                          | 加载结果监听,成功和失败                                      |
 
 ## 封装实现
 
@@ -243,37 +272,6 @@ iv_8.load(url2, height = 800)
 - 由于使用到基于okhttp的下载进度管理所以使用了 glide 的@GlideModule配置方法，这样可能会和你项目自定义配置有冲突，目前只能拉代码自己修改，然后依赖Module方式了。如有更好方式联系我改进。
 
 - Android图片加载库常见的只有几种，其他库可以自行参考实现。Kotlin真香！！！
-
-
-## Api介绍
-
-
-| `load: Any？`                                                | 加载资源                                                     |
-| ------------------------------------------------------------ | ------------------------------------------------------------ |
-| `with: Any?`                                                 | Glide.with( )参数，默认用ImageView                           |
-| `placeHolderResId: Int`                                      | 占位图 资源id                                                |
-| `placeHolderDrawable: Drawable?`                             | 占位图 drawable                                              |
-| `errorResId: Int`                                            | 错误图 资源id                                                |
-| `errorDrawable: Drawable?`                                   | 错误图 drawable                                              |
-| `skipMemoryCache: Boolean = false`                           | 跳过内存缓存                                                 |
-| `diskCacheStrategy: ImageOptions.DiskCache`                  | 磁盘缓存策略                                                 |
-| `priority: ImageOptions.LoadPriority`                        | 加载优先级                                                   |
-| `thumbnail: Float = 0f`                                      | 缩略图 缩略系数                                              |
-| ` thumbnailUrl: Any? = null`                                 | 缩略图 url、File等                                           |
-| `size: ImageOptions.OverrideSize?`                           | override                                                     |
-| `isAnim: Boolean = true`                                     | 动画 gif动图支持                                             |
-| `isCrossFade: Boolean = false`                               | crossFade                                                    |
-| `isCircle: Boolean = false`                                  | 圆形头像                                                     |
-| `isGray: Boolean = false`                                    | 黑白图像                                                     |
-| `isFitCenter: Boolean = false`                               | FitCenter                                                    |
-| `centerCrop: Boolean = false`                                | centerCrop                                                   |
-| `format: Bitmap.Config? = null`                              | 输出图像模式                                                 |
-| `borderWidth: Int = 0, borderColor: Int = 0`                 | 边框宽度，边框颜色                                           |
-| `isBlur: Boolean = false, blurRadius: Int = 25, blurSampling: Int = 4` | 高斯模糊，模糊半径和图像缩放倍数（倍数越高处理速度越快，图像越不清晰） |
-| `isRoundedCorners: Boolean = false, roundRadius: Int = 0, cornerType: ImageOptions.CornerType` | 圆角，圆角弧度，圆角模式，单角、对角、四角                   |
-| `vararg transformation: Transformation<Bitmap>`              | 转换器，支持圆角、黑白等和其他自定义                         |
-| `onProgressListener: OnProgressListener? = null`             | 网络资源进度监听，仅网络资源有效                             |
-| `requestListener: OnImageListener?`                          | 加载结果监听,成功和失败                                      |
 
 
 ## CircleProgressView 仿微博图片加载
