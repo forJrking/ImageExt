@@ -66,7 +66,7 @@ class ImageOptions {
     var errorDrawable: Drawable?
         get() = TODO()
         set(value) {
-            setDrawableOptions { placeHolderDrawable = value }
+            setDrawableOptions { errorDrawable = value }
         }
 
     /** DES: fallback */

@@ -44,8 +44,20 @@
            }
        }
    }
+   
+   //代替AppGlideModule实现来修改glide配置接口
+   AppGlideModuleIml.options = object : IAppGlideOptions {
+       override fun applyOptions(context: Context, builder: GlideBuilder) {
+           //修改缓存大小等
+           Log.d("TAG", "applyOptions")
+       }
+       override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
+           //修改注册组件 例如 okhttp 注意如果修改可能会导致进度丢失
+           Log.d("TAG", "registerComponents")
+       }
+   }
    ```
-
+   
 4. 其他扩展函数和效果
 
    ```kotlin
@@ -269,7 +281,7 @@ iv_8.load(url2, height = 800)
 
 [forJrking/ImageExt: 基于Glide封装ImageView加载图片资源的扩展函数集 (github.com)](https://github.com/forJrking/ImageExt)
 
-- 由于使用到基于okhttp的下载进度管理所以使用了 glide 的@GlideModule配置方法，这样可能会和你项目自定义配置有冲突，目前只能拉代码自己修改，然后依赖Module方式了。如有更好方式联系我改进。
+- ~~由于使用到基于okhttp的下载进度管理所以使用了 glide 的@GlideModule配置方法，这样可能会和你项目自定义配置有冲突，目前只能拉代码自己修改，然后依赖Module方式了。如有更好方式联系我改进。~~
 
 - Android图片加载库常见的只有几种，其他库可以自行参考实现。Kotlin真香！！！
 

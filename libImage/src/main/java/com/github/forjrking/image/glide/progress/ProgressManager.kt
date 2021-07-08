@@ -16,19 +16,20 @@ import java.util.concurrent.ConcurrentHashMap
 object ProgressManager {
     private val listenersMap = ConcurrentHashMap<String, OnProgressListener>()
 
-    var okHttpClient: Call.Factory = OkHttpClient
-            .Builder()
-            .addNetworkInterceptor { chain: Interceptor.Chain ->
-                val request = chain.request()
-                val response = chain.proceed(request)
-                response.newBuilder().run {
-                    val body = response.body()
-                    if (body != null) {
-                        this.body(ProgressResponseBody(request.url().toString(), LISTENER, body))
-                    }
-                    this.build()
+    /**glide 下载进度的主要逻辑 需要在GlideModule注入*/
+    fun OkHttpClient.Builder.glideProgressInterceptor(): OkHttpClient.Builder =
+        this.addNetworkInterceptor { chain: Interceptor.Chain ->
+            val request = chain.request()
+            val response = chain.proceed(request)
+            response.newBuilder().run {
+                val body = response.body()
+                if (body != null) {
+                    this.body(ProgressResponseBody(request.url().toString(), LISTENER, body))
                 }
-            }.build()
+                this.build()
+            }
+        }
+
 
     private val LISTENER = object : InternalProgressListener {
         override fun onProgress(url: String, bytesRead: Long, totalBytes: Long) {

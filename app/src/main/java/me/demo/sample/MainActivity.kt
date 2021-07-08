@@ -1,15 +1,21 @@
 package me.demo.sample
 
 import android.Manifest
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.bumptech.glide.GlideBuilder
+import com.bumptech.glide.Registry
 import com.github.forjrking.image.*
 import com.github.forjrking.image.core.ImageOptions
+import com.github.forjrking.image.glide.AppGlideModuleIml
 import com.github.forjrking.image.glide.GlideImageLoader
+import com.github.forjrking.image.glide.IAppGlideOptions
 import com.github.forjrking.image.glide.transformation.CircleWithBorderTransformation
 import com.github.forjrking.image.glide.transformation.GrayscaleTransformation
 import kotlinx.android.synthetic.main.activity_main.*
@@ -28,18 +34,34 @@ import pub.devrel.easypermissions.EasyPermissions
  */
 class MainActivity : AppCompatActivity() {
     var url1 = "https://t7.baidu.com/it/u=3713375227,571533122&fm=193&f=GIF"
-    var url3 = "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fhbimg.huabanimg.com%2F3fee54d0b2e0b7a132319a8e104f5fdc2edd3d35d03ee-93Jmdq_fw658&refer=http%3A%2F%2Fhbimg.huabanimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619934437&t=2c758765592bf56ec7eb4ad1912a2830"
+    var url3 =
+        "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fhbimg.huabanimg.com%2F3fee54d0b2e0b7a132319a8e104f5fdc2edd3d35d03ee-93Jmdq_fw658&refer=http%3A%2F%2Fhbimg.huabanimg.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1619934437&t=2c758765592bf56ec7eb4ad1912a2830"
     var url4 = "http://img.mp.itc.cn/upload/20170311/33f2b7f7ffb04ecb81e42405e20b3fdc_th.gif"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        AppGlideModuleIml.options = object : IAppGlideOptions {
+            override fun applyOptions(context: Context, builder: GlideBuilder) {
+                //修改缓存大小等
+                Log.d("TAG", "applyOptions")
+            }
+
+            override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
+                //修改注册组件 例如 okhttp 注意如果修改可能会导致进度丢失
+                Log.d("TAG", "registerComponents")
+            }
+
+        }
+
+        Log.d("TAG", "clearDiskCache")
         GlobalScope.launch(Dispatchers.IO) {
             GlideImageLoader.clearDiskCache(applicationContext)
         }
         GlideImageLoader.clearMemory(applicationContext)
 
         ImageOptions.DrawableOptions.setDefault {
-            placeHolderResId =  R.drawable.ic_launcher_background
+            placeHolderResId = R.drawable.ic_launcher_background
             errorResId = R.color.gray
         }
 
@@ -49,20 +71,20 @@ class MainActivity : AppCompatActivity() {
     private fun initView() {
         circleProgressView.visibility = View.VISIBLE
         iv_0.postDelayed(
-                {
-                    iv_0.load(url3) {
-                        progressListener { isComplete, percentage, bytesRead, totalBytes ->
-                            // 跟踪进度
-                            Log.d("TAG", "onProgress: $percentage")
-                            if (isComplete) {
-                                circleProgressView.visibility = View.GONE
-                            } else {
-                                circleProgressView.progress = percentage
-                            }
+            {
+                iv_0.load(url3) {
+                    progressListener { isComplete, percentage, bytesRead, totalBytes ->
+                        // 跟踪进度
+                        Log.d("TAG", "onProgress: $percentage")
+                        if (isComplete) {
+                            circleProgressView.visibility = View.GONE
+                        } else {
+                            circleProgressView.progress = percentage
                         }
                     }
+                }
 
-                }, 500
+            }, 500
         )
 
         iv_1.setOnClickListener { downloadImage() }
@@ -102,7 +124,8 @@ class MainActivity : AppCompatActivity() {
 //        iv_10.loadImage(url2, placeHolder = R.color.green)
         iv_8.load(url1) {
             placeHolderResId = R.color.black
-            transformation = arrayOf(GrayscaleTransformation(), CircleWithBorderTransformation(borderWidth = 0, borderColor = 0))
+            transformation = arrayOf(GrayscaleTransformation(),
+                CircleWithBorderTransformation(borderWidth = 0, borderColor = 0))
             progressListener { isComplete, percentage, bytesRead, totalBytes ->
                 //加载进度
             }
@@ -127,7 +150,8 @@ class MainActivity : AppCompatActivity() {
         if (hasStoragePermission()) {
             GlobalScope.launch {
                 try {
-                    val downloadImage = GlideImageLoader.downloadImage(context = this@MainActivity, imgUrl = url1)
+                    val downloadImage =
+                        GlideImageLoader.downloadImage(context = this@MainActivity, imgUrl = url1)
                     Log.d("TAG", "downloadImage: ${downloadImage?.absolutePath}")
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -135,10 +159,10 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             EasyPermissions.requestPermissions(
-                    this,
-                    getString(R.string.need_write_external),
-                    WRITE_EXTERNAL_PERM,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                this,
+                getString(R.string.need_write_external),
+                WRITE_EXTERNAL_PERM,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
         }
     }
 
