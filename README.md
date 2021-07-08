@@ -16,7 +16,7 @@
 
 2. ```groovy
    dependencies {
-       implementation 'com.github.forJrking:ImageExt:0.0.2'
+       implementation 'com.github.forJrking:ImageExt:0.0.4'
    }
    ```
 
